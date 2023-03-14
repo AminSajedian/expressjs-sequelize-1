@@ -12,9 +12,7 @@ const usersRouter = express.Router();
 /************ Models Methods ************/
 /****************************************/
 UserAccount.checkUserTypeName = async function (req) {
-  if (
-    req.body.userTypeName === "standard-user"
-  ) {
+  if (req.body.userTypeName === "standard-user") {
   } else {
     const error = new Error(`user type is not correct`);
     error.status = 403;
@@ -108,13 +106,7 @@ usersRouter.post("/signup", async (req, res, next) => {
   } catch (error) {
     console.table([{ Error: error.status, Message: error.message }]);
     console.error(error);
-    next(
-      createError(
-        error.status
-          ? (error.status, error.message)
-          : (500, "An error occurred while creating a new user")
-      )
-    );
+    next(createError(500, "An error occurred while creating a new user"));
   }
 });
 
@@ -146,13 +138,7 @@ usersRouter.post("/login", async (req, res, next) => {
   } catch (error) {
     console.error("\x1b[41m%s\x1b[0m", error);
     console.table([{ Error: error.status, Message: error.message }]);
-    next(
-      createError(
-        error.status
-          ? (error.status, error.message)
-          : (500, "An error occurred while a user logging in")
-      )
-    );
+    next(createError(500, "An error occurred while a user logging in"));
   }
 });
 
@@ -178,13 +164,7 @@ usersRouter.get("/my-account", JWTAuthMid, async (req, res, next) => {
   } catch (error) {
     console.error("\x1b[41m%s\x1b[0m", error);
     console.table([{ Error: error.status, Message: error.message }]);
-    next(
-      createError(
-        error.status
-          ? (error.status, error.message)
-          : (500, "An error occurred while getting user")
-      )
-    );
+    next(createError(500, "An error occurred while getting user"));
   }
 });
 
@@ -217,13 +197,8 @@ usersRouter.put("/my-account", JWTAuthMid, async (req, res, next) => {
   } catch (error) {
     console.error("\x1b[41m%s\x1b[0m", error);
     console.table([{ Error: error.status, Message: error.message }]);
-    next(
-      createError(
-        error.status
-          ? (error.status, error.message)
-          : (500, "An error occurred while modifying user")
-      )
-    );
+
+    next(createError(500, "An error occurred while modifying user"));
   }
 });
 
@@ -242,13 +217,7 @@ usersRouter.delete("/my-account", JWTAuthMid, async (req, res, next) => {
   } catch (error) {
     console.error("\x1b[41m%s\x1b[0m", error);
     console.table([{ Error: error.status, Message: error.message }]);
-    next(
-      createError(
-        error.status
-          ? (error.status, error.message)
-          : (500, "An error occurred while deleting user")
-      )
-    );
+    next(createError(500, "An error occurred while deleting user"));
   }
 });
 
