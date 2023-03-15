@@ -37,6 +37,10 @@ server.use(loggerMiddleware);
 // ******** ROUTES ************
 server.use("/api", services);
 
+app.get('/', (req, res) => {
+  res.send('Welcome!')
+})
+
 // ******** ERROR MIDDLEWARES ************
 server.use(badRequestErrorHandler);
 server.use(notFoundErrorHandler);
