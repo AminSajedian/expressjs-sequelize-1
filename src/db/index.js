@@ -3,15 +3,18 @@ const { Sequelize, DataTypes } = seq;
 
 /****** Import Models  ******/
 /*** User Management ***/
-import UserAccount from "./user-management/user-account.model.js";
-import UserType from "./user-management/user-type.model.js";
-import UserLog from "./user-management/user-log.model.js";
+// import UserAccount from "./user-management/user-account.model.js";
+// import UserType from "./user-management/user-type.model.js";
+// import UserLog from "./user-management/user-log.model.js";
+
+/*** Blog Posts ***/
+import BlogPost from "./blog-post-management/blog-post.model.js";
 
 /****** Import Models Associations  ******/
-import Associations from "./associations.js";
+// import Associations from "./associations.js";
 
 /****** Import Environment Variables  ******/
-const { DB_USER, DB_PORT, DB_NAME, DB_PASSWORD, DB_HOST } = process.env;
+const { DB_USER, DB_PORT, DB_NAME, DB_PASSWORD, DB_HOST, DB_SSL_CA } = process.env;
 
 /*** Connecting to a database ***/
 /*** Passing parameters separately (other dialects) for connection to the database ***/
@@ -19,12 +22,13 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
   port: DB_PORT,
   host: DB_HOST,
   dialect: "mariadb",
-  // dialectOptions: {
-  //   ssl: {
-  //     require: true,
-  //     rejectUnauthorized: false,
-  //   },
-  // },
+  dialectOptions: {
+    ssl: {
+      // require: true,
+      rejectUnauthorized: false,
+      ca: DB_SSL_CA,
+    },
+  },
 });
 
 /*** Testing the connection ***/
@@ -39,14 +43,15 @@ sequelize
 /****** Define Models (Tables) ******/
 const db = {
   /*** User Management ***/
-  UserAccount: UserAccount(sequelize, DataTypes),
-  UserType: UserType(sequelize, DataTypes),
-  UserLog: UserLog(sequelize, DataTypes),
-
+  // UserAccount: UserAccount(sequelize, DataTypes),
+  // UserType: UserType(sequelize, DataTypes),
+  // UserLog: UserLog(sequelize, DataTypes),
+  
+  BlogPost: BlogPost(sequelize, DataTypes),
   sequelize: sequelize,
 };
 
 /****** Define Models Associations  ******/
-Associations(db);
+// Associations(db);
 
 export default db;
