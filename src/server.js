@@ -37,8 +37,8 @@ server.use(loggerMiddleware);
 // ******** ROUTES ************
 server.use("/api", services);
 
-app.get('/', (req, res) => {
-  res.send('Welcome!')
+server.get('/', (req, res) => {
+  res.send('Welcome to the blog posts')
 })
 
 // ******** ERROR MIDDLEWARES ************
