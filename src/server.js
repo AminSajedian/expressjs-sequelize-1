@@ -14,6 +14,7 @@ import services from "./services/index.js";
 
 const server = express();
 const port = process.env.PORT || 5000;
+// const port = 5000;
 
 // ******** MIDDLEWARES ************
 server.use(cors());
@@ -35,11 +36,9 @@ const loggerMiddleware = (req, res, next) => {
 server.use(loggerMiddleware);
 
 // ******** ROUTES ************
+server.get('/', (req, res) => { res.send('Welcome to the blog posts') })
 server.use("/api", services);
 
-server.get('/', (req, res) => {
-  res.send('Welcome to the blog posts')
-})
 
 // ******** ERROR MIDDLEWARES ************
 server.use(badRequestErrorHandler);

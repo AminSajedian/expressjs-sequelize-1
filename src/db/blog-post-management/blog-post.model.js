@@ -20,7 +20,7 @@ export default (sequelize, DataTypes) => {
         // allowNull: false,
       },
       body: {
-        type: DataTypes.STRING(1000),
+        type: DataTypes.STRING(3000),
         // allowNull: false,
       },
     }
