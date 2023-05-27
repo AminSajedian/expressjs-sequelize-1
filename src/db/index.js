@@ -22,13 +22,13 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
   port: DB_PORT,
   host: DB_HOST,
   dialect: "mariadb",
-  dialectOptions: {
-    ssl: {
-      // require: true,
-      rejectUnauthorized: false,
-      ca: DB_SSL_CA,
-    },
-  },
+  // dialectOptions: {
+  //   ssl: {
+  //     // require: true,
+  //     rejectUnauthorized: false,
+  //     ca: DB_SSL_CA,
+  //   },
+  // },
 });
 
 /*** Testing the connection ***/
