@@ -16,6 +16,8 @@ import { authorizeUser } from "./auth/auth.js";
 
 const server = express();
 const port = process.env.PORT || 5000;
+// const port = 5000;
+
 // ******** MIDDLEWARES ************
 // Configure cors middleware with allowed origins
 server.use(cors({

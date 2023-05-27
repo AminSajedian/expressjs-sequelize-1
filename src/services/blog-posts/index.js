@@ -12,19 +12,32 @@ const blogPostsRouter = express.Router();
 /************ BlogPosts Routers ************/
 /*******************************************/
 
-/*** Get All BlogPost  ***/
+/*** Create My BlogPost ***/
+blogPostsRouter.post("/", async (req, res, next) => {
+  try {
+    const blogPost = await BlogPost.create(req.body);
+    res.status(201).send(blogPost);
+
+  } catch (error) {
+    console.error(error);
+    next(createError(500, "An error occurred creating a new BlogPost"));
+  }
+}
+);
+
+/*** Get All BlogPosts  ***/
 blogPostsRouter.get("/", async (req, res, next) => {
   try {
     const blogPost = await BlogPost.findAll();
     res.send(blogPost);
   } catch (error) {
-    console.error("\x1b[41m%s\x1b[0m", error);
     console.table([{ Error: error.status, Message: error.message }]);
+    console.error(error);
     next(createError(500, "An error occurred while getting blog Posts"));
   }
 });
 
-/*** Get one BlogPost by Id  ***/
+/*** Get BlogPost by Id  ***/
 blogPostsRouter.get("/:blogPostId", async (req, res, next) => {
   try {
     const blogPost = await BlogPost.findByPk(req.params.blogPostId);
@@ -34,40 +47,14 @@ blogPostsRouter.get("/:blogPostId", async (req, res, next) => {
       next(createError(404, `blogPost with ${req.params.blogPostId} not found`));
     }
   } catch (error) {
-    console.error("\x1b[41m%s\x1b[0m", error);
     console.table([{ Error: error.status, Message: error.message }]);
-    next(createError(500, "An error occurred while getting blog Post"));
+    console.error(error);
+    next(createError(500, "An error occurred while a user logging in"));
   }
 });
 
-// /*** Get My BlogPost Account ***/
-// blogPostsRouter.get("/posts", async (req, res, next) => {
-//   try {
-//     const blogPost = await BlogPostAccount.findByPk(req.blogPost.id, {
-//       // attributes: {
-//       //   exclude: ["id", "password", "createdAt", "updatedAt"],
-//       // },
-//       include: {
-//         model: BlogPostType,
-//         attributes: ["blogPostTypeName"],
-//       },
-//     });
-//     // blogPostTypeId deleted for the security reasone
-//     delete blogPost.dataValues.blogPostTypeId;
-//     if (blogPost) {
-//       res.send(blogPost);
-//     } else {
-//       next(createError(404, `blogPost ${req.blogPost.id} not found`));
-//     }
-//   } catch (error) {
-//     console.error("\x1b[41m%s\x1b[0m", error);
-//     console.table([{ Error: error.status, Message: error.message }]);
-//     next(createError(500, "An error occurred while getting blogPost"));
-//   }
-// });
-
-// /*** Update My BlogPost Account ***/
-// blogPostsRouter.put("/posts", JWTAuthMid, async (req, res, next) => {
+// /*** Update My BlogPost  ***/
+// blogPostsRouter.put("/:blogPostId", async (req, res, next) => {
 //   try {
 //     if (
 //       req.body.id ||
@@ -82,7 +69,7 @@ blogPostsRouter.get("/:blogPostId", async (req, res, next) => {
 //         )
 //       );
 //     } else {
-//       const data = await BlogPostAccount.update(req.body, {
+//       const data = await BlogPost.update(req.body, {
 //         where: { id: req.blogPost.id },
 //       });
 
@@ -93,18 +80,17 @@ blogPostsRouter.get("/:blogPostId", async (req, res, next) => {
 //       }
 //     }
 //   } catch (error) {
-//     console.error("\x1b[41m%s\x1b[0m", error);
 //     console.table([{ Error: error.status, Message: error.message }]);
-
+//     console.error(error);
 //     next(createError(500, "An error occurred while modifying blogPost"));
 //   }
 // });
 
-// /*** Delete My BlogPost Account ***/
+// /*** Delete My BlogPost  ***/
 // // we can use Paranoid (soft-deletion of records), instead of a hard-deletion
-// blogPostsRouter.delete("/posts", JWTAuthMid, async (req, res, next) => {
+// blogPostsRouter.delete("/:blogPostId", async (req, res, next) => {
 //   try {
-//     const row = await BlogPostAccount.destroy({
+//     const row = await BlogPost.destroy({
 //       where: { id: req.blogPost.id },
 //     });
 //     if (row > 0) {
@@ -113,8 +99,8 @@ blogPostsRouter.get("/:blogPostId", async (req, res, next) => {
 //       next(createError(404));
 //     }
 //   } catch (error) {
-//     console.error("\x1b[41m%s\x1b[0m", error);
 //     console.table([{ Error: error.status, Message: error.message }]);
+//     console.error(error);
 //     next(createError(500, "An error occurred while deleting blogPost"));
 //   }
 // });
