@@ -26,9 +26,9 @@ export default (sequelize, DataTypes) => {
       },
       password: {
         type: DataTypes.STRING(64),
-        // validate: {
-        //   is: /^[0-9a-f]{64}$/i,
-        // },
+        validate: {
+          is: /^[0-9a-f]{64}$/i,
+        },
       },
       firstName: {
         type: DataTypes.STRING(75),

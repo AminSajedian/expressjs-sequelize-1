@@ -1,4 +1,3 @@
-import { checkIfUserIsAuthenticated, getUserId, getUsername } from "./auth.js";
 
 // Implement authentication and authorization middleware functions
 export function authenticateUser(req, res, next) {
@@ -21,7 +20,9 @@ export function authenticateUser(req, res, next) {
     // If the user is not authenticated, send an error response or redirect the user to a login page
     res.status(401).send('Unauthorized');
   }
-}export function checkIfUserIsAuthenticated(req) {
+}
+
+export function checkIfUserIsAuthenticated(req) {
   // Implementation for checking if the user is authenticated goes here
   // For example, you could check if the user has a valid session or authentication token
   return true;

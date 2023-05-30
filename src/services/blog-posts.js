@@ -3,7 +3,7 @@ import createError from "http-errors";
 // import bcrypt from "bcrypt";
 // import { JWTAuthMid } from "../../auth/middlewares.js";
 // import { JWTAuthenticate } from "../../auth/tools.js";
-import db from "../../db/index.js";
+import db from "../db/index.js";
 const { BlogPost } = db;
 
 const blogPostsRouter = express.Router();
