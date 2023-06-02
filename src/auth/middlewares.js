@@ -2,7 +2,7 @@ import createError from "http-errors";
 import { verifyToken } from "./tools.js";
 
 import db from "../db/index.js";
-const { UserAccount, UserType } = db;
+const { User } = db;
 
 export const JWTAuthMid = async (req, res, next) => {
   // 1. Check if Authorization header is received, if it is not --> trigger an error (401)
@@ -22,12 +22,7 @@ export const JWTAuthMid = async (req, res, next) => {
       const content = await verifyToken(req.cookies.accessToken);
 
       // 4. Find user in db and attach him/her to the request object
-      const user = await UserAccount.findByPk(content.id, {
-        include: {
-          model: UserType,
-          attributes: ["userTypeName"],
-        },
-      });
+      const user = await User.findByPk(content.id);
 
       if (user) {
         req.user = user;
@@ -38,31 +33,5 @@ export const JWTAuthMid = async (req, res, next) => {
     } catch (error) {
       next(createError(401, "Token not valid!"));
     }
-  }
-};
-
-export const adminAuthMid = (req, res, next) => {
-  if (req.user.user_type.userTypeName === "administrator") {
-    next();
-  } else {
-    next(createError(403, "Admins only!"));
-  }
-};
-
-export const jobseekerAuthMid = async (req, res, next) => {
-  const userTypeName = req.user.user_type.userTypeName;
-  if (userTypeName === "jobseeker" || userTypeName === "administrator") {
-    next();
-  } else {
-    next(createError(403, "Forbidden"));
-  }
-};
-
-export const recruiterAuthMid = async (req, res, next) => {
-  const userTypeName = req.user.user_type.userTypeName;
-  if (userTypeName === "recruiter" || userTypeName === "administrator") {
-    next();
-  } else {
-    next(createError(403, "Forbidden"));
   }
 };

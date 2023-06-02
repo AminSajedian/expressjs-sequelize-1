@@ -14,12 +14,8 @@ import services from "./services/index.js";
 import { authenticateUser } from "./auth/auth.js";
 import { authorizeUser } from "./auth/auth.js";
 
-const { UserType, UserAccount } = db
-
-
 const app = express();
-const port = process.env.PORT || 5000;
-// const port = 5000;
+const port = process.env.PORT || 4000;
 
 // ******** MIDDLEWARES ************
 // Configure cors middleware with allowed origins
@@ -28,7 +24,7 @@ app.use(cors({
   optionsSuccessStatus: 200
 }));
 // Limit the incoming JSON payload size
-app.use(express.json({ limit: '10kb' }));
+app.use(express.json({ limit: '3MB' }));
 // Configure cookie-parser middleware with secret key
 app.use(cookieParser('mySecretKey'));
 // ******** loggerMiddleware ************
@@ -54,7 +50,6 @@ app.use('/api', services);
 // app.get('/', (req, res) => {
 //   res.send('Welcome to the blog posts')
 // })
-
 
 // ******** ERROR MIDDLEWARES ************
 // Implement custom error handlers before the catch-all error handler

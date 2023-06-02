@@ -19,10 +19,7 @@ usersRouter.post(
   async (req, res, next) => {
     try {
       // *** note: password will be hased in the UserAccount model definition ***
-
-      console.log("hello");
       const validationResult = await UserAccount.validate({ fields: [pasword] });
-      console.log("validationResult: ", validationResult);
       if (!validationResult) {
         throw new Error("An error occurred in creating a UserAccount");
       }
