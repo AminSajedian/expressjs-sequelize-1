@@ -19,7 +19,11 @@ export const JWTAuthMid = async (req, res, next) => {
 
       // 3. Verify the token (decode it)
       // const content = await verifyToken(token);
-      const content = await verifyToken(req.cookies.accessToken);
+      try {
+        const content = await verifyToken(req.cookies.accessToken);
+      } catch (error) {
+        throw createError(401, "Token is not valid!")
+      }
 
       // 4. Find user in db and attach him/her to the request object
       const user = await User.findByPk(content.id);
