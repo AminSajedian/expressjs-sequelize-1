@@ -1,7 +1,7 @@
 import express from "express";
 import listEndpoints from "express-list-endpoints";
 import cors from "cors";
-import db from "./db/index.js";
+// import db from "./db/index.js";
 import cookieParser from "cookie-parser";
 import {
   notFoundErrorHandler,
@@ -11,8 +11,8 @@ import {
   forbiddenHandler,
 } from "./errorHandlers.js";
 import services from "./services/index.js";
-import { authenticateUser } from "./auth/auth.js";
-import { authorizeUser } from "./auth/auth.js";
+// import { authenticateUser } from "./auth/auth.js";
+
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -47,7 +47,7 @@ app.use(loggerMiddleware);
 // Implement authentication and authorization middleware before the services routes
 
 app.use('/api', services);
-// app.get('/', (req, res) => {
+// app.get('/', JWTAuthMid, (req, res) => {
 //   res.send('Welcome to the blog posts')
 // })
 
@@ -58,6 +58,7 @@ app.use(notFoundErrorHandler);
 app.use(unAuthorizedHandler);
 app.use(forbiddenHandler);
 app.use(catchAllErrorHandler);
+
 // ******** DATABASE AND SERVER LISTENING ************
 // Use alter: true to apply database schema changes without data loss
 db.sequelize
