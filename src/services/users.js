@@ -4,7 +4,7 @@ import createError from "http-errors";
 import bcrypt from "bcrypt";
 // import { JWTAuthenticate, verifyToken } from "../../auth/tools.js";
 import db from "../db/index.js";
-const { UserAccount, UserType, UserLog } = db;
+const { User } = db;
 
 const usersRouter = express.Router();
 
@@ -18,41 +18,22 @@ usersRouter.post(
   // *** find and add "basic" UserTypeId to the req.body ***
   async (req, res, next) => {
     try {
-      // *** note: password will be hased in the UserAccount model definition ***
-      const validationResult = await UserAccount.validate({ fields: [pasword] });
-      if (!validationResult) {
-        throw new Error("An error occurred in creating a UserAccount");
-      }
-
-      res.status(201).send(validationResult);
-
-
-      const userType = await UserType.findOne({
-        where: { userTypeName: "basic" },
-      });
-      req.body.userTypeId = userType.id;
-      if (!userType) {
-        throw new Error("An error occurred in finding UserType");
-      }
-
       // *** create a user account ***
-      const result = await UserAccount.create(req.body);
-      if (!validationResult) {
-        throw new Error("An error occurred in creating a UserAccount");
+      const result = await User.create(req.body);
+      console.log("result: ", result);
+      if (!result) {
+        throw createError(400, "An error occurred in creating a User");
       }
-      req.newUser = validationResult.toJSON();
-      try {
-        const result = await UserAccount.findOne({
-          where: { email: req.newUser.email },
-          attributes: {
-            exclude: ["id", "password", "userTypeId", "createdAt", "updatedAt"],
-          },
-        });
-        req.user = result.toJSON();
-      } catch (error) {
-        throw error;
-      }
+      
+      // *** get the user account and exclude some attributes ***
+      const user = await User.findByPk(result.id, {
+        // where: { email: req.newUser.email },
+        attributes: {
+          exclude: ["id", "password", "createdAt", "updatedAt"],
+        },
+      });
 
+      res.status(200).send(user);
 
     } catch (error) {
       next(error);
@@ -69,7 +50,7 @@ usersRouter.post("/login", async (req, res, next) => {
       throw createError(401, "Please provide email and password!");
     }
     // *** find user on db by email ***
-    const result = await UserAccount.findOne({
+    const result = await User.findOne({
       where: { email },
       attributes: {
         exclude: ["userTypeId", "createdAt", "updatedAt"],

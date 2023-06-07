@@ -1,7 +1,7 @@
 import express from "express";
 import listEndpoints from "express-list-endpoints";
 import cors from "cors";
-// import db from "./db/index.js";
+import db from "./db/index.js";
 import cookieParser from "cookie-parser";
 import {
   notFoundErrorHandler,
@@ -12,7 +12,6 @@ import {
 } from "./errorHandlers.js";
 import services from "./services/index.js";
 // import { authenticateUser } from "./auth/auth.js";
-
 
 const app = express();
 const port = process.env.PORT || 4000;
