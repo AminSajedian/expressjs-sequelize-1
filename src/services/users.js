@@ -18,13 +18,17 @@ usersRouter.post(
   // *** find and add "basic" UserTypeId to the req.body ***
   async (req, res, next) => {
     try {
+      const { email, password } = req.body;
+      if (!email || !password) {
+        throw createError(400, "Please provide email and password");
+      }
       // *** create a user account ***
       const result = await User.create(req.body);
       console.log("result: ", result);
       if (!result) {
         throw createError(400, "An error occurred in creating a User");
       }
-      
+
       // *** get the user account and exclude some attributes ***
       const user = await User.findByPk(result.id, {
         // where: { email: req.newUser.email },
@@ -47,7 +51,7 @@ usersRouter.post("/login", async (req, res, next) => {
     // *** check if email and password are provided ***
     const { email, password } = req.body;
     if (!email || !password) {
-      throw createError(401, "Please provide email and password!");
+      throw createError(400, "Please provide email and password!");
     }
     // *** find user on db by email ***
     const result = await User.findOne({
@@ -58,7 +62,7 @@ usersRouter.post("/login", async (req, res, next) => {
     });
     if (!result) {
       // email is wrong
-      throw createError(404, "email or password is wrong please check at once");
+      throw createError(404, "Email or password is wrong");
     }
 
     const user = result.toJSON();
@@ -69,7 +73,7 @@ usersRouter.post("/login", async (req, res, next) => {
 
     if (!isMatch) {
       // email is wrong
-      throw createError(401, "email or password is wrong please check at once");
+      throw createError(401, "Email or password is wrong");
     }
     // *** user logins creation on the db ***
 
